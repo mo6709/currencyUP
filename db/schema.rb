@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171126224609) do
+ActiveRecord::Schema.define(version: 20171127221325) do
+
+  create_table "corporation_investments", force: :cascade do |t|
+    t.integer "currency_id"
+    t.integer "corporation_id"
+    t.float "return_rate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "corporations", force: :cascade do |t|
+    t.string "regions_array"
+    t.integer "investment_period"
     t.string "name"
     t.string "title"
     t.datetime "created_at", null: false
@@ -58,7 +68,8 @@ ActiveRecord::Schema.define(version: 20171126224609) do
     t.integer "investor_id"
     t.integer "currency_id"
     t.float "total_amount"
-    t.float "rate"
+    t.float "dolar_rate"
+    t.float "return_rate"
     t.integer "t_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

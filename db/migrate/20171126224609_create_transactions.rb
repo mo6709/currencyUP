@@ -5,7 +5,8 @@ class CreateTransactions < ActiveRecord::Migration[5.1]
       t.integer  :investor_id
       t.integer  :currency_id
       t.float    :total_amount
-      t.float    :rate
+      t.float    :dolar_rate
+      t.float    :return_rate
       t.integer  :t_type
 
       t.timestamps
