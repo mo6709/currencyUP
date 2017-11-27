@@ -4,7 +4,8 @@ class CreateCorporationInvestments < ActiveRecord::Migration[5.1]
       t.integer "currency_id"
       t.integer "corporation_id"
       t.float   "return_rate"
-      
+      t.boolean "active"
+
       t.timestamps
     end
   end
