@@ -10,10 +10,13 @@ class Api::V1::InvestorsController < Api::V1::BaseController
 
 	def show
 		@investor = Investor.find_by(:id => params["id"])
-        
+        @moneyMade = @investor.moneyMade();
         render json: {
         	type: "investor",
-        	data: @investor
+        	data: {
+        		investor: @investor,
+                moneyMade: @moneyMade
+        	}
         }
 	end
 

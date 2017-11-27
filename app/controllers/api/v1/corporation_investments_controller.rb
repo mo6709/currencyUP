@@ -1,4 +1,4 @@
-class Api::V1::CorporationInvestments <  Api::V1::BaseController
+class Api::V1::CorporationInvestmentsController <  Api::V1::BaseController
 	def index
 		@corporation_investments = CorporationInvestment.all
 		

@@ -1,4 +1,4 @@
-class Api::V1::CurrencyCurrencyCorporations < Api::V1::BaseController 
+class Api::V1::CurrencyCorporationsController < Api::V1::BaseController 
 	def index
 		@currency_corporations = CurrencyCorporation.all
 		

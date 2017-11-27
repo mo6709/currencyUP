@@ -1,0 +1,54 @@
+BACKEND
+
+1)builds api routes + nested rouets
+4)device for investors and corporations (rad online special devise only for apis)
+5)logic for the models (check this repo RubyMoney/money) 
+2)validation for all db transactions
+3)commit a lot to git
+6)consuming api's to update the db
+7)serialize all models 
+8)build authorization for all actions 
+9)build report/analization models (read online: http://blog.nrowegt.com/pure-ruby-on-rails-reporting/)
+
+
+
+
+
+
+
+logic problems to solve.
+CORPORATION 
+1)can receive a transaction?
+2)can make payment to investor?
+3)can make purchase of currency
+4) is good time to make a purchase of currency?
+5) ‎how corporation should pay back the investor(what type of currency)?
+6) ‎what is time period of the investment(in order to calculate the profit)?
+7) ‎how much to pay interest on investment(in order to calculate the profit)?
+8) ‎when to pay back to investor(should it be done before the time period because is cheaper? can't be later than the due date). 
+9)what is the investment return rate for a given period of time? 
+
+INVESTOR
+1)can send currency to corporation?
+2)how much money an investor have?
+3)validate a transaction only if there is enough money in currency_investors of that investor and that type of currency and all received transactions are less or equal to the amount of received transaction minus the total_amount of that currency.
+
+NOTE
+1) user should only have the option to invest in corporation
+
+
+  corporation_invesment table
+     t.interger "currency_id"
+     t.integer  "corporation_id"
+     t.float    "return_rate"
+     t.boolean  "active"
+ 
+   transaction table
+	   t.float "dolar_rate" = Currency.find_by_id(currency_id).rate
+	   t.float "return_rate" = corporation_invesment.where(currency_id => 1, corporation_id => 22, ctated_at => today).return_rate
+
+    corporation table
+	    t.string "regions_array" #// serialize(attr_name, class_name = Object)
+	    t.integer "investment_period"
+
+
