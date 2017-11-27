@@ -8,7 +8,8 @@ Rails.application.routes.draw do
       resources :transactions
       resources :investors
       resources :corporations
+      resources :corporation_investments
     end
   end
-  
+
 end
