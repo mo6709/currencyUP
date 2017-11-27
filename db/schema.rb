@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20171127221325) do
     t.integer "currency_id"
     t.integer "corporation_id"
     t.float "return_rate"
+    t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
