@@ -1,0 +1,2 @@
+class CorporationInvestment < ApplicationRecord
+end
