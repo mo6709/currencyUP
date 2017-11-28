@@ -20,7 +20,7 @@ class Api::V1::CurrencyInvestorsController < Api::V1::BaseController
 	def create
 		beybug
 		@currency_investor = CurrencyInvestor.create(currency_investor_params)
-		redirect_to currency_investor_path(@currency_investor.id)
+		redirect_to api_v1_currency_investor_path(@currency_investor.id)
 	end
 
 	def update
@@ -33,7 +33,7 @@ class Api::V1::CurrencyInvestorsController < Api::V1::BaseController
 	def destroy
 		beybug
 		@currency_investor.destroy(params["id"])
-		redirect_to currency_currency_investors_path
+		redirect_to api_v1_currency_currency_investors_path
 	end
 
 	private

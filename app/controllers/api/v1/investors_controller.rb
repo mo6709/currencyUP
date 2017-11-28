@@ -23,20 +23,20 @@ class Api::V1::InvestorsController < Api::V1::BaseController
 	def create
 		beybug
 		@investor = Investor.create(investor_params)
-		redirect_to investor_path(@investor.id)
+		redirect_to api_v1_investor_path(@investor.id)
 	end
 
 	def update
 		beybug
 		@investor = Investor.find_by(:id => params["id"])
 		@investor.update(investor_params)
-		redirect_to investor_path(@investor.id)
+		redirect_to api_v1_investor_path(@investor.id)
 	end
 
 	def destroy
 		beybug
 		@investor.destroy(params["id"])
-		redirect_to investors_path
+		redirect_to api_v1_investors_path
 	end
 
 	private

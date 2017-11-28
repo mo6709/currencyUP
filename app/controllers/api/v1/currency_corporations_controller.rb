@@ -20,20 +20,20 @@ class Api::V1::CurrencyCorporationsController < Api::V1::BaseController
 	def create
 		beybug
 		@currency_corporation = CurrencyCorporation.create(currency_corporation_params)
-		redirect_to currency_corporation_path(@currency_corporation.id)
+		redirect_to api_v1_currency_corporation_path(@currency_corporation.id)
 	end
 
 	def update
 		beybug
 		@currency_corporation = CurrencyCorporation.find_by(:id => params["id"])
 		@currency_corporation.update(currency_corporation_params)
-		redirect_to currency_corporation_path(@currency_corporation.id)
+		redirect_to api_v1_currency_corporation_path(@currency_corporation.id)
 	end
 
 	def destroy
 		beybug
 		@currency_corporation.destroy(params["id"])
-		redirect_to currency_currency_corporations_path
+		redirect_to api_v1_currency_currency_corporations_path
 	end
 
 	private

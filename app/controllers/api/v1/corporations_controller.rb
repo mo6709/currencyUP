@@ -20,20 +20,20 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 	def create
 		beybug
 		@corporation = Corporation.create(corporation_params)
-		redirect_to corporation_path(@corporation.id)
+		redirect_to api_v1_corporation_path(@corporation.id)
 	end
 
 	def update
 		beybug
 		@corporation = Corporation.find_by(:id => params["id"])
 		@corporation.update(corporation_params)
-		redirect_to corporation_path(@corporation.id)
+		redirect_to api_v1_corporation_path(@corporation.id)
 	end
 
 	def destroy
 		beybug
 		@corporation.destroy(params["id"])
-		redirect_to corporations_path
+		redirect_to api_v1_corporations_path
 	end
 
 	private

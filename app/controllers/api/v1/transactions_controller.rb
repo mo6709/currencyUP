@@ -21,20 +21,20 @@ class Api::V1::TransactionsController < Api::V1::BaseController
 		beybug
 		@transaction = Transaction.create(transaction_params)
 		@transaction.rate = Currency.find_by(:id => params["transaction"]["currency_id"]).rate
-		redirect_to transaction_path(@transaction.id)
+		redirect_to api_v1_transaction_path(@transaction.id)
 	end
 
 	def update
 		beybug
 		@transaction = Transaction.find_by(:id => params["id"])
 		@transaction.update(transaction_params)
-		redirect_to transaction_path(@transaction.id)
+		redirect_to api_v1_transaction_path(@transaction.id)
 	end
 
 	def destroy
 		beybug
 		@transaction.destroy(params["id"])
-		redirect_to transaction_path
+		redirect_to api_v1_transaction_path
 	end
 
 	private
