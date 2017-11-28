@@ -34,21 +34,218 @@ INVESTOR
 3)validate a transaction only if there is enough money in currency_investors of that investor and that type of currency and all received transactions are less or equal to the amount of received transaction minus the total_amount of that currency.
 
 NOTE
-1) user should only have the option to invest in corporation
+1)investor should only have the option to invest in corporation
 
 
-  corporation_invesment table
-     t.interger "currency_id"
-     t.integer  "corporation_id"
-     t.float    "return_rate"
-     t.boolean  "active"
- 
-   transaction table
-	   t.float "dolar_rate" = Currency.find_by_id(currency_id).rate
-	   t.float "return_rate" = corporation_invesment.where(currency_id => 1, corporation_id => 22, ctated_at => today).return_rate
-
-    corporation table
-	    t.string "regions_array" #// serialize(attr_name, class_name = Object)
-	    t.integer "investment_period"
 
 
+
+
+
+SCHEMA:
+ create_table "corporations", force: :cascade do |t|
+    t.string "regions_array"
+    t.integer "investment_period"
+    t.string "name"
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+
+
+
+
+MIGRATION:
+  class CreateCorporations < ActiveRecord::Migration[5.1]
+  def change
+    create_table :corporations do |t|
+      t.string  :regions_array
+      t.integer :investment_period
+      t.string  :name
+      t.string  :title
+      
+      t.timestamps
+    end
+  end
+end
+
+
+
+
+
+MODEL:
+class Corporation < ApplicationRecord
+	has_many :currency_corporations
+	has_many :currencies, through: :currency_corporations
+	has_many :transactions
+	has_many :investors, through: :transactions
+	has_many :corporation_investments
+
+
+	# make a a metheod to generate investments for 
+	# the corporation (corporation_investment) whenever the 
+	# manager of the corporation click on the generator button 
+	# check for every region in the regions array look the 
+	# currency with that region then make the culcalation for 
+	# the return rate for the period of thime that the corporation specified 
+	# then create a record in corporation_investment with all the info 
+	# also dont forget to ake the corporation_investment active 
+
+
+	# make a method to pay users their money,
+	# in order to do ypu need look in all transaction records 
+	# that have the same corporation id 
+	# and created number months(corporation.investment_period) ago and 
+	# collect all transactions from those record then make 
+	# transactions with t_tyope of pay_to with the amount of the transaction plus 
+	# the return_rate for the user that made the transaction 
+end
+
+
+CONTROLLER:
+  class Api::V1::CorporationsController < Api::V1::BaseController
+	def index
+		@corporations = Corporation.all
+		
+		render json: { 
+		    type: "corporations",
+		    data: @corporations 
+	    } 		
+	end
+
+	def show
+		@corporation = Corporation.find_by(:id => params["id"])
+        
+        render json: {
+        	type: "corporation",
+        	data: @corporation
+        }
+	end
+
+	def create
+		beybug
+		@corporation = Corporation.create(corporation_params)
+		redirect_to api_v1_corporation_path(@corporation.id)
+	end
+
+	def update
+		beybug
+		@corporation = Corporation.find_by(:id => params["id"])
+		@corporation.update(corporation_params)
+		redirect_to api_v1_corporation_path(@corporation.id)
+	end
+
+	def destroy
+		beybug
+		@corporation.destroy(params["id"])
+		redirect_to api_v1_corporations_path
+	end
+
+	private
+
+	def corporation_params
+		params.require(:corporation).permit(:name, :title)
+	end
+end
+
+
+
+
+
+
+SCHEMA:
+  create_table "investors", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.string "region"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+
+
+
+
+MIGRATION:
+  create_table :investors do |t|
+      t.string   :first_name
+      t.string   :last_name
+      t.string   :email
+      t.string   :region
+      
+      t.timestamps
+    end
+
+
+
+
+
+MODEL:
+  class Investor < ApplicationRecord
+	has_many :currency_investors
+	has_many :currencies, through: :currency_investors
+	has_many :transactions 
+	has_many :corporations, through: :transactions
+
+	# make a function that investor can generate a transaction based 
+	# on the corporation_investment thart was clicked 
+	# also make sure to ditect it from the currency_investor.total amount 
+	# with the right currency id and add it to
+	# currency_corporation total_amount with the right currency id
+end
+
+
+
+
+
+
+CONTROLLER:
+  class Api::V1::InvestorsController < Api::V1::BaseController
+	def index
+		@investors = Investor.all
+		
+		render json: { 
+		    type: "investors",
+		    data: @investors 
+	    } 		
+	end
+
+	def show
+		@investor = Investor.find_by(:id => params["id"])
+        @moneyMade = @investor.moneyMade();
+        render json: {
+        	type: "investor",
+        	data: {
+        		investor: @investor,
+                moneyMade: @moneyMade
+        	}
+        }
+	end
+
+	def create
+		beybug
+		@investor = Investor.create(investor_params)
+		redirect_to api_v1_investor_path(@investor.id)
+	end
+
+	def update
+		beybug
+		@investor = Investor.find_by(:id => params["id"])
+		@investor.update(investor_params)
+		redirect_to api_v1_investor_path(@investor.id)
+	end
+
+	def destroy
+		beybug
+		@investor.destroy(params["id"])
+		redirect_to api_v1_investors_path
+	end
+
+	private
+
+	def investor_params
+		params.require(:investor).permit(:name, :title)
+	end
+end

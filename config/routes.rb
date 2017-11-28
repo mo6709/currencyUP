@@ -6,8 +6,6 @@ Rails.application.routes.draw do
       resources :currency_investors
       resources :currency_corporations
       resources :transactions
-      resources :investors
-      resources :corporations
       resources :corporation_investments
     end
   end

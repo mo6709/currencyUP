@@ -21,15 +21,6 @@ ActiveRecord::Schema.define(version: 20171127221325) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "corporations", force: :cascade do |t|
-    t.string "regions_array"
-    t.integer "investment_period"
-    t.string "name"
-    t.string "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "currencies", force: :cascade do |t|
     t.string "name"
     t.float "rate"
@@ -51,15 +42,6 @@ ActiveRecord::Schema.define(version: 20171127221325) do
     t.integer "currency_id"
     t.integer "investor_id"
     t.float "total_amount"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "investors", force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
-    t.string "email"
-    t.string "region"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
