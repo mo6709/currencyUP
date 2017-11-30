@@ -1,5 +1,4 @@
 Rails.application.routes.draw do 
-
   namespace :api do
     namespace :v1 do
       mount_devise_token_auth_for 'Investor', at: 'investor_auth'
@@ -9,25 +8,23 @@ Rails.application.routes.draw do
       # end
       
       #no authentication needed for these routes
-      resources :currencies, :only => [:index, :show] #brake this route to have only waht they need 
-      resources :corporation_investments, :only => [:index, :show] #brake this route to have only waht they need 
-      resources :corporations, :only => [:index]
-      
-      #investor/corporation authentication needed for all transaction routes
-      resources :transactions
+      resources :currencies, :only => [:index, :show]
+      resources :corporation_investments, :only => [:index, :show]
       
       #investor authentication needed for these routes
       devise_scope :investor do        
-        resources :investor, :only => [:create, :show, :update, :destroy] do 
-          resources :currency_investors
+        resources :investor, :only => [] do 
+            resources :currency_investors
+            resources :transactions
         end
       end
       
       #corporation auhentication needed for these routes 
       devise_scope :corporations do
-        resources :corporations, :only => [:show, :create, :update, :destroy] do 
+        resources :corporations, :only => [] do 
           resources :currency_corporations
-          resources :corporation_investments, :only => [:create, :update, :delete]
+          resources :corporation_investments
+          resources :transactions
         end   
       end
       
