@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171130225837) do
+ActiveRecord::Schema.define(version: 20171203193314) do
 
   create_table "corporation_investments", force: :cascade do |t|
     t.integer "currency_id"
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 20171130225837) do
     t.text "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "region"
     t.index ["confirmation_token"], name: "index_investors_on_confirmation_token", unique: true
     t.index ["email"], name: "index_investors_on_email", unique: true
     t.index ["reset_password_token"], name: "index_investors_on_reset_password_token", unique: true
