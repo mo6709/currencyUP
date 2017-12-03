@@ -4,6 +4,7 @@ class Corporation < ApplicationRecord
 	      :recoverable, :rememberable, :trackable, :validatable,
 	      :confirmable, :omniauthable
 	include DeviseTokenAuth::Concerns::User
+    before_save -> { skip_confirmation! }
 
 	serialize :regions_array, Array
 
