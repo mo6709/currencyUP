@@ -26,6 +26,10 @@ ActiveRecord::Schema.define(version: 20171127221325) do
     t.integer "investment_period"
     t.string "name"
     t.string "title"
+    t.string "uid", default: "", null: false
+    t.string "image"
+    t.string "email"
+    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -60,6 +64,9 @@ ActiveRecord::Schema.define(version: 20171127221325) do
     t.string "last_name"
     t.string "email"
     t.string "region"
+    t.string "uid", default: "", null: false
+    t.string "image"
+    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
