@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do 
       post '/investor_login' => "sessions#investor_login"
-      post '/corporation_login' => "sessions#icorporation_login"
+      post '/corporation_login' => "sessions#corporation_login"
 
       post '/investor_signup' => "investors#signup"
       post '/corporation_signup' => "corporations#signup"
