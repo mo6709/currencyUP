@@ -14,10 +14,10 @@ class Api::V1::CorporationsController < Api::V1::BaseController
         @corporation = Corporation.find_by(:id => params["id"])
 		if token && decoded_token
 		    render json: @corporation
-		elsif 
-			render json: { id: @corporation.id, name: @corporation.name }
+		elsif 	
+			render json: { id: corporation.id, name: @corporation.name }
 		else
-			render json: { errors: "Make sure you have the right id" }, status: 500
+			render json: { errors: "Could not find Corporation" }, status: 500
 		end
 	end		
 
