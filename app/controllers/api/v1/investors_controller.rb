@@ -9,21 +9,23 @@ class Api::V1::InvestorsController < Api::V1::BaseController
 	end
 
 	def show
-		@investor = Investor.find_by(:id => params["id"])
-        @moneyMade = @investor.moneyMade();
-        render json: {
-        	type: "investor",
-        	data: {
-        		investor: @investor,
-                moneyMade: @moneyMade
-        	}
-        }
+		token = request.env["HTTP_AUTHORIZATION"]
+		decoded_token = Auth.decode_token(token)
+		if token && decoded_token
+			@investor = Investor.find_by(:id => params["id"])
+		    render json: @investor
+		else
+			render json: { errors: "Could not find Investor" }, status: 500
+		end
 	end
 
-	def create
-		beybug
-		@investor = Investor.create(investor_params)
-		redirect_to api_v1_investor_path(@investor.id)
+	def signup
+		investor = Investor.new(investor_params)
+		if investor.save
+			render json: { token: Auth.create_token(investor) }
+		else
+			render json: { errors: investor.full_mesages }, status: 500
+		end
 	end
 
 	def update
@@ -42,6 +44,6 @@ class Api::V1::InvestorsController < Api::V1::BaseController
 	private
 
 	def investor_params
-		params.require(:investor).permit(:name, :title)
+		params.require(:investor).permit(:email, :password, :name)
 	end
 end
