@@ -28,6 +28,15 @@ class Api::V1::InvestorsController < Api::V1::BaseController
 		end
 	end
 
+	def signup
+		investor = Investor.new(investor_params)
+		if investor.save
+			render json: { token: Auth.create_token(investor), account_id: investor.id } 
+		else
+			render json: { errors: investor.errors.full_messages }, status: 500
+		end
+	end
+
 	def update
 		beybug
 		@investor = Investor.find_by(:id => params["id"])
@@ -44,6 +53,6 @@ class Api::V1::InvestorsController < Api::V1::BaseController
 	private
 
 	def investor_params
-		params.require(:investor).permit(:email, :password, :name)
+		params.require(:investor).permit(:email, :password)
 	end
 end

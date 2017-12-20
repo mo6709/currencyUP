@@ -24,9 +24,9 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 	def signup
 		corporation = Corporation.new(corporation_params)
 		if corporation.save
-			render json: { token: Auth.create_token(corporation) } 
+			render json: { token: Auth.create_token(corporation), account_id: corporation.id } 
 		else
-			render json: { errors: corporation.full_mesages }, status: 500
+			render json: { errors: corporation.errors.full_messages }, status: 500
 		end
 	end
 
@@ -46,6 +46,6 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 	private
 
 	def corporation_params
-		params.require(:corporation).permit(:email, :password, :name)
+		params.require(:corporation).permit(:email, :password)
 	end
 end
