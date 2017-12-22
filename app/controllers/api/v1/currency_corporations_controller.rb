@@ -1,11 +1,14 @@
 class Api::V1::CurrencyCorporationsController < Api::V1::BaseController 
 	def index
-		@currency_corporations = CurrencyCorporation.all
-		
-		render json: { 
-		    type: "currency_corporations",
-		    data: @currency_corporations 
-	    } 		
+		token = request.env["HTTP_AUTHORIZATION"]
+		if token && Auth.decode_token(token)
+			render json: { 
+			    type: "currency_corporations",
+			    data: CurrencyCorporation.all
+		    }
+		else
+			render json: { error: { message: "You must have a valid token!" } }, status: 500
+		end     		
 	end
 
 	def show

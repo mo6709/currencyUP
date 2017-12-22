@@ -1,3 +1,3 @@
 class InvestorSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :first_name, :last_name, :region, :email
 end

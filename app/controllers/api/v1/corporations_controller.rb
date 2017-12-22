@@ -15,9 +15,9 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 		if token && decoded_token
 		    render json: @corporation
 		elsif 	
-			render json: { id: corporation.id, name: @corporation.name }
+			render json: { id: @corporation.id, name: @corporation.name }
 		else
-			render json: { errors: "Could not find Corporation" }, status: 500
+			render json: { errors: "Could not find Corporation" }, status: 404
 		end
 	end		
 
@@ -26,7 +26,7 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 		if corporation.save
 			render json: { token: Auth.create_token(corporation), account_id: corporation.id } 
 		else
-			render json: { errors: corporation.errors.full_messages }, status: 500
+			render json: { errors: corporation.errors.full_messages }, status: 404
 		end
 	end
 
@@ -46,6 +46,6 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 	private
 
 	def corporation_params
-		params.require(:corporation).permit(:email, :password)
+		params.require(:corporation).permit(:email, :name, :password)
 	end
 end

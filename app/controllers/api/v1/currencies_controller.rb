@@ -1,5 +1,6 @@
 class Api::V1::CurrenciesController < Api::V1::BaseController
 	def index
+		# if token && Auth.decode_toke(token).all 
 		@currencies = Currency.all
 		
 		render json: { 
