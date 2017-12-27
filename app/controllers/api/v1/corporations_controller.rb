@@ -30,12 +30,24 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 		end
 	end
 
-	# def update
-	# 	beybug
-	# 	@corporation = Corporation.find_by(:id => params["id"])
-	# 	@corporation.update(corporation_params)
-	# 	redirect_to api_v1_corporation_path(@corporation.id)
-	# end
+	def update
+		binding.pry
+        token = request.env["HTTP_AUTHORIZATION"]
+        decoded_token = Auth.decode_token(token)
+        @corporation = Corporation.find_by(:id => params["id"])
+
+		if token && decoded_token
+			@corporation.update(corporation_update_params)
+			if @corporation.save
+			    render json: @corporation
+			else
+				render json: { errors: "Account wasnt updated, somthing went wrong" }, status: 404
+			end
+		else
+			rende json: { errors: "Could not authenticate your account" }, status: 404
+		end
+		
+	end
 
 	# def destroy
 	# 	beybug
@@ -47,5 +59,9 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 
 	def corporation_params
 		params.require(:corporation).permit(:email, :name, :title, :password)
+	end
+
+	def corporation_update_params
+		params.require(:corporation).permit(:email, :name, :title, :investment_period, :regions_array => [])
 	end
 end

@@ -1,3 +1,3 @@
 class CorporationInvestmentSerializer < ActiveModel::Serializer
-  attributes :id
+    attributes :id, :currency, :return_rate, :active
 end
