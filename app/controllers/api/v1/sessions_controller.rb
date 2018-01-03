@@ -8,7 +8,7 @@ class Api::V1::SessionsController < Api::V1::BaseController
 			investor_info = { email: investor.email, id: investor.id, first_name: investor.first_name, last_name: investor.last_name }
 			render json: { token: Auth.create_token(investor_info), account_id: investor.id }
 		else
-			render json: {status: "error", code: 400, message: "Can't find investor"}, status: 400
+			render json: { status: "error", code: 400, message: "Can't find investor" }, status: 400
 		end
 	end
 
@@ -19,8 +19,7 @@ class Api::V1::SessionsController < Api::V1::BaseController
 			corporation_info = { email: corporation.email, id: corporation.id, name: corporation.name }
 			render json: { token: Auth.create_token(corporation_info), account_id: corporation.id }
 		else
-			# render json: {error: "bad request"}, status: 500
-			render json: {status: "error", code: 400, message: "Can't find corporation"}, status: 400
+			render json: { status: "error", code: 400, message: "Can't find corporation" }, status: 400
 		end
 	end
 end
