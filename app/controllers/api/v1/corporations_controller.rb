@@ -17,7 +17,7 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 		elsif 	
 			render json: { id: @corporation.id, name: @corporation.name }
 		else
-			render json: { errors: "Could not find Corporation" }, status: 404
+			render json: { status: "error", code: 400, message: "Could not find Corporation" }, status: 400
 		end
 	end		
 
@@ -26,27 +26,25 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 		if corporation.save
 			render json: { token: Auth.create_token(corporation), account_id: corporation.id } 
 		else
-			render json: { errors: corporation.errors.full_messages }, status: 404
+			render json: { status: "error", code:400, message: corporation.errors.full_messages }, status: 400
 		end
 	end
 
 	def update
-		binding.pry
         token = request.env["HTTP_AUTHORIZATION"]
-        decoded_token = Auth.decode_token(token)
-        @corporation = Corporation.find_by(:id => params["id"])
-
+        decoded_token = Auth.decode_token(token)     
+        binding.pry
 		if token && decoded_token
+            @corporation = Corporation.find_by(:id => decoded_token[0]["account"]["id"])
 			@corporation.update(corporation_update_params)
 			if @corporation.save
 			    render json: @corporation
 			else
-				render json: { errors: "Account wasnt updated, somthing went wrong" }, status: 404
+				render json: { status: "error", code: 400, messages: @corporation.errors.messages }, status: 400
 			end
 		else
-			rende json: { errors: "Could not authenticate your account" }, status: 404
+			render json: { status: "errors", code: 400, message: "Could not authenticate account" }, status: 400
 		end
-		
 	end
 
 	# def destroy
