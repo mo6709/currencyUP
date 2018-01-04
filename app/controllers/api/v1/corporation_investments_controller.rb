@@ -20,9 +20,21 @@ class Api::V1::CorporationInvestmentsController <  Api::V1::BaseController
 	end
 
 	def create
-		beybug
-		@corporation_investment = CorporationInvestment.create(corporation_investment_params)
-		redirect_to api_v1_corporation_investment_path(@corporation_investment.id)
+		token = request.env["HTTP_AUTHORIZATION"]
+		decoded_token = Auth.decode_token(token)
+		if token && decoded_token 
+			corp_id = decoded_token[0]["account"]["id"]
+			corporation = Corporation.find_by(:id => corp_id)
+			corporation.corporation_investments.create(corporation_investment_params)
+			if corporation.save
+				@corporation_investments = corporation.corporation_investments
+				redirect_to api_v1_corporation_investments_path
+			else
+				render json: { status: 'error', code: 400, messages: corporation.errors.messages }, status: 400
+			end
+		else
+			render json: { status: 'error', code: 400, messages: "Could not authenticate Corporation" }, status: 400
+		end
 	end
 
 	def update
@@ -41,6 +53,6 @@ class Api::V1::CorporationInvestmentsController <  Api::V1::BaseController
 	private
 
 	def corporation_investment_params
-		params.require(:corporation_investment).permit(:currency_id, :corporation_id, :retur_rate, :active)
+		params.require(:corporation_investment).permit(:currency_id, :return_rate, :active, :investment_date)
 	end
 end
