@@ -28,7 +28,7 @@ class Api::V1::CorporationInvestmentsController <  Api::V1::BaseController
 			corporation.corporation_investments.create(corporation_investment_params)
 			if corporation.save
 				@corporation_investments = corporation.corporation_investments
-				redirect_to api_v1_corporation_investments_path
+				render json: { data: @corporation_investments }, include: ['currency']
 			else
 				render json: { status: 'error', code: 400, messages: corporation.errors.messages }, status: 400
 			end

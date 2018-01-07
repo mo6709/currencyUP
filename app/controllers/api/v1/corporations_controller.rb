@@ -33,7 +33,7 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 	def update
         token = request.env["HTTP_AUTHORIZATION"]
         decoded_token = Auth.decode_token(token) 
-            
+
 		if token && decoded_token
             @corporation = Corporation.find_by(:id => decoded_token[0]["account"]["id"])
 			@corporation.update(corporation_update_params)
