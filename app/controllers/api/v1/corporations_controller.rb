@@ -14,10 +14,10 @@ class Api::V1::CorporationsController < Api::V1::BaseController
         @corporation = Corporation.find_by(:id => params["id"])
 		if token && decoded_token
 		    render json: @corporation
-		elsif 	
+		elsif @corporation	
 			render json: { id: @corporation.id, name: @corporation.name }
 		else
-			render json: { status: "error", code: 400, message: "Could not find Corporation" }, status: 400
+			render json: { status: "error", code: 400, messages: "Could not find Corporation" }, status: 400
 		end
 	end		
 
@@ -26,7 +26,7 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 		if corporation.save
 			render json: { token: Auth.create_token(corporation), account_id: corporation.id } 
 		else
-			render json: { status: "error", code:400, message: corporation.errors.full_messages }, status: 400
+			render json: { status: "error", code:400, messages: corporation.errors.full_messages }, status: 400
 		end
 	end
 
@@ -43,7 +43,7 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 				render json: { status: "error", code: 400, messages: @corporation.errors.messages }, status: 400
 			end
 		else
-			render json: { status: "errors", code: 400, message: "Could not authenticate account" }, status: 400
+			render json: { status: "error", code: 400, messages: "Could not authenticate account" }, status: 400
 		end
 	end
 

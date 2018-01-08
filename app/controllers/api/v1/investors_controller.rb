@@ -12,36 +12,37 @@ class Api::V1::InvestorsController < Api::V1::BaseController
 		token = request.env["HTTP_AUTHORIZATION"]
 		decoded_token = Auth.decode_token(token)
 		if token && decoded_token
-			@investor = Investor.find_by(:id => params["id"])
+			@investor = Investor.find_by(:id => decoded_token[0]["account"]["id"])
 		    render json: @investor
 		else
-			render json: { errors: "Could not find Investor" }, status: 500
+			render json: { status: "error", messages: "Could not find Investor" }, status: 400
 		end
 	end
 
 	def signup
 		investor = Investor.new(investor_params)
 		if investor.save
-			render json: { token: Auth.create_token(investor) }
+			render json: { token: Auth.create_token(investor), account_id: investor.id }
 		else
-			render json: { errors: investor.full_mesages }, status: 500
+			render json: { status: "error", code: 400, messages: investor.full_mesages }, status: 400
 		end
 	end
 
-	def signup
-		investor = Investor.new(investor_params)
-		if investor.save
-			render json: { token: Auth.create_token(investor), account_id: investor.id } 
-		else
-			render json: { errors: investor.errors.full_messages }, status: 500
-		end
-	end
 
 	def update
-		beybug
-		@investor = Investor.find_by(:id => params["id"])
-		@investor.update(investor_params)
-		redirect_to api_v1_investor_path(@investor.id)
+        token = request.env["HTTP_AUTHORIZATION"]
+        decoded_token = Auth.decode_token(token) 
+		if token && decoded_token
+            @investor = Investor.find_by(:id => decoded_token[0]["account"]["id"])
+			@investor.update(investor_update_params)
+			if @investor.save
+			    render json: @investor
+			else
+				render json: { status: "error", code: 400, messages: @investor.errors.messages }, status: 400
+			end
+		else
+			render json: { status: "error", code: 400, messages: "Could not authenticate account" }, status: 400
+		end
 	end
 
 	def destroy
@@ -53,6 +54,10 @@ class Api::V1::InvestorsController < Api::V1::BaseController
 	private
 
 	def investor_params
-		params.require(:investor).permit(:email, :password)
+		params.require(:investor).permit(:email, :password, :first_name, :last_name)
+	end
+
+	def investor_update_params
+		params.require(:investor).permit(:email, :first_name, :last_name, :region)
 	end
 end
