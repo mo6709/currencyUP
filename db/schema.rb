@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180104160853) do
+ActiveRecord::Schema.define(version: 20180110195715) do
 
   create_table "corporation_investments", force: :cascade do |t|
     t.integer "currency_id"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20180104160853) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "investment_date"
+    t.string "region"
   end
 
   create_table "corporations", force: :cascade do |t|
@@ -83,7 +84,7 @@ ActiveRecord::Schema.define(version: 20180104160853) do
     t.integer "t_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "corporation_investments_id"
+    t.integer "corporation_investment_id"
   end
 
 end

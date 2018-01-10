@@ -53,6 +53,6 @@ class Api::V1::CorporationInvestmentsController <  Api::V1::BaseController
 	private
 
 	def corporation_investment_params
-		params.require(:corporation_investment).permit(:currency_id, :return_rate, :active, :investment_date)
+		params.require(:corporation_investment).permit(:currency_id, :return_rate, :active, :investment_date, :region)
 	end
 end
