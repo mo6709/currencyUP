@@ -29,7 +29,8 @@ class Api::V1::TransactionsController < Api::V1::BaseController
 		    end 
 		    @transaction = account.transactions.create(transaction_params)
 		    if @transaction.save
-		    	render json: { type: "transaction", data: @transaction }
+		    	account_transactions = account.transactions
+		    	render json: { type: "transactions", data: account_transactions }, include: ['corporation', 'corporation_investment']
 		    else
 		    	render json: { status: "error", code: 400, messages: transaction.errors.messages }, status: 400
 		    end
