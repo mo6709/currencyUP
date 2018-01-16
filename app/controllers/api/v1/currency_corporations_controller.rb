@@ -7,7 +7,7 @@ class Api::V1::CurrencyCorporationsController < Api::V1::BaseController
 			    data: CurrencyCorporation.all
 		    }
 		else
-			render json: { error: { message: "You must have a valid token!" } }, status: 500
+			render json: { error: { messages: "You must have a valid token!" } }, status: 500
 		end     		
 	end
 
