@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180116225521) do
+ActiveRecord::Schema.define(version: 20180118225136) do
 
   create_table "corporation_investments", force: :cascade do |t|
     t.integer "currency_id"
@@ -44,6 +44,19 @@ ActiveRecord::Schema.define(version: 20180116225521) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "acronym"
+    t.integer "priority"
+    t.integer "subunit_to_unit"
+    t.integer "exponent"
+    t.integer "iso_numeric"
+    t.integer "smallest_denomination"
+    t.string "thousands_separator"
+    t.string "html_entity"
+    t.string "decimal_mark"
+    t.string "symbol"
+    t.string "iso_code"
+    t.string "subunit"
+    t.boolean "symbol_first"
+    t.boolean "crypto"
   end
 
   create_table "currency_corporations", force: :cascade do |t|

@@ -1,3 +1,3 @@
 class CurrencyCorporationSerializer < ActiveModel::Serializer
-  attributes :id, :currency, :total_amount
+  attributes :id, :currency_id, :total_amount
 end

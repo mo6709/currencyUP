@@ -45,12 +45,6 @@ class Api::V1::InvestorsController < Api::V1::BaseController
 		end
 	end
 
-	def destroy
-		beybug
-		@investor.destroy(params["id"])
-		redirect_to api_v1_investors_path
-	end
-
 	private
 
 	def investor_params

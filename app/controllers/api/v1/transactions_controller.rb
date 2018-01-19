@@ -29,6 +29,9 @@ class Api::V1::TransactionsController < Api::V1::BaseController
 		    end 
 		    @transaction = account.transactions.create(transaction_params)
 		    if @transaction.save
+		     #    currency_rate = @transaction.currency.rate
+		     #    @transaction.dolar_rate = currency_rate 
+		     #    @transaction.save
 		    	account_transactions = account.transactions
 		    	render json: { type: "transactions", data: account_transactions }, include: ['corporation', 'corporation_investment']
 		    else

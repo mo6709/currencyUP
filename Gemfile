@@ -21,7 +21,9 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'active_model_serializers'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-gem 'money'
+gem 'money-rails', '~>1'
+gem 'google_currency', '~> 3.4'
+gem 'faraday'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 gem 'jwt', '~> 1.5.3'
