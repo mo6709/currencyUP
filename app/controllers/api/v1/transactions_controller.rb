@@ -22,37 +22,22 @@ class Api::V1::TransactionsController < Api::V1::BaseController
 		decoded_token = Auth.decode_token(token)
 		if token && decoded_token 
 			id = decoded_token[0]["account"]["id"]
-		    if (!!params["corporation_id"])
-		    	account = Corporation.find_by(:id => id)
-		    elsif (!!params["investor_id"])
-		    	account = Investor.find_by(:id => id)
-		    end 
-		    @transaction = account.transactions.create(transaction_params)
-		    if @transaction.save
-		     #    currency_rate = @transaction.currency.rate
-		     #    @transaction.dolar_rate = currency_rate 
-		     #    @transaction.save
-		    	account_transactions = account.transactions
-		    	render json: { type: "transactions", data: account_transactions }, include: ['corporation', 'corporation_investment']
+
+		    if params["transaction"]["t_type"] === "purchased_by_corp"
+		    	@transaction = Transaction.purchased_by_corporation(transaction_params, id)
 		    else
-		    	render json: { status: "error", code: 400, messages: transaction.errors.messages }, status: 400
+		        @transaction = Transaction.check_and_create(transaction_params, id)	
 		    end
+
+		    if @transaction.class.name === "Transaction"
+		    	render json: { status: "sucess", type: "transaction", data: @transaction }
+		    elsif @transaction.class.name === "Hash"
+		    	render json: { status: "error", code: 400, messages: @transaction }, code: 400
+		    end
+		    		
 		else
-			render json: { status: "error", code: 400, messages: "Could not authenticate, try agin" }, status: 400
+			render json: { status: "error", code: 400, messages: { error: ["Could not authenticate, try agin"] } }, status: 400
 		end
-	end
-
-	def update
-		beybug
-		@transaction = Transaction.find_by(:id => params["id"])
-		@transaction.update(transaction_params)
-		redirect_to api_v1_transaction_path(@transaction.id)
-	end
-
-	def destroy
-		beybug
-		@transaction.destroy(params["id"])
-		redirect_to api_v1_transaction_path
 	end
 
 	private

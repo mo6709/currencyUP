@@ -15,7 +15,7 @@ class Api::V1::InvestorsController < Api::V1::BaseController
 			@investor = Investor.find_by(:id => decoded_token[0]["account"]["id"])
 		    render json: @investor
 		else
-			render json: { status: "error", messages: "Could not find Investor" }, status: 400
+			render json: { status: "error", messages: { error: ["Could not find Investor"] } }, status: 400
 		end
 	end
 
@@ -41,7 +41,7 @@ class Api::V1::InvestorsController < Api::V1::BaseController
 				render json: { status: "error", code: 400, messages: @investor.errors.messages }, status: 400
 			end
 		else
-			render json: { status: "error", code: 400, messages: "Could not authenticate account" }, status: 400
+			render json: { status: "error", code: 400, messages: { error: ["Could not authenticate account"] } }, status: 400
 		end
 	end
 

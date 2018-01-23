@@ -17,25 +17,6 @@ class Api::V1::CurrencyInvestorsController < Api::V1::BaseController
         }
 	end
 
-	def create
-		beybug
-		@currency_investor = CurrencyInvestor.create(currency_investor_params)
-		redirect_to api_v1_currency_investor_path(@currency_investor.id)
-	end
-
-	def update
-		beybug
-		@currency_investor = CurrencyInvestor.find_by(:id => params["id"])
-		@currency_investor.update(currency_investor_params)
-		redirect_to currency_investor_path(@currency_investor.id)
-	end
-
-	def destroy
-		beybug
-		@currency_investor.destroy(params["id"])
-		redirect_to api_v1_currency_currency_investors_path
-	end
-
 	private
 
 	def currency_investor_params

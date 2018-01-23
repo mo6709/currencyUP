@@ -31,7 +31,7 @@ class Api::V1::CorporationInvestmentsController <  Api::V1::BaseController
 				render json: { status: 'error', code: 400, messages: corporation.errors.messages }, status: 400
 			end
 		else
-			render json: { status: 'error', code: 400, messages: "Could not authenticate Corporation" }, status: 400
+			render json: { status: 'error', code: 400, messages: { error: ["Could not authenticate Corporation"] } }, status: 400
 		end
 	end
 

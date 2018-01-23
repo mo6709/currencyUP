@@ -7,7 +7,7 @@ class Api::V1::CurrencyCorporationsController < Api::V1::BaseController
 			    data: CurrencyCorporation.all
 		    }
 		else
-			render json: { error: { messages: "You must have a valid token!" } }, status: 500
+			render json: { messages: { error: ["You must have a valid token!"] } }, status: 500
 		end     		
 	end
 
@@ -18,25 +18,6 @@ class Api::V1::CurrencyCorporationsController < Api::V1::BaseController
         	type: "currency_corporation",
         	data: @currency_corporation
         }
-	end
-
-	def create
-		beybug
-		@currency_corporation = CurrencyCorporation.create(currency_corporation_params)
-		redirect_to api_v1_currency_corporation_path(@currency_corporation.id)
-	end
-
-	def update
-		beybug
-		@currency_corporation = CurrencyCorporation.find_by(:id => params["id"])
-		@currency_corporation.update(currency_corporation_params)
-		redirect_to api_v1_currency_corporation_path(@currency_corporation.id)
-	end
-
-	def destroy
-		beybug
-		@currency_corporation.destroy(params["id"])
-		redirect_to api_v1_currency_currency_corporations_path
 	end
 
 	private

@@ -17,7 +17,7 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 		elsif @corporation	
 			render json: { id: @corporation.id, name: @corporation.name }
 		else
-			render json: { status: "error", code: 400, messages: "Could not find Corporation" }, status: 400
+			render json: { status: "error", code: 400, messages: { error: ["Could not find Corporation"] } }, status: 400
 		end
 	end		
 
@@ -43,15 +43,9 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 				render json: { status: "error", code: 400, messages: @corporation.errors.messages }, status: 400
 			end
 		else
-			render json: { status: "error", code: 400, messages: "Could not authenticate account" }, status: 400
+			render json: { status: "error", code: 400, messages: { error: ["Could not authenticate account"] } }, status: 400
 		end
 	end
-
-	# def destroy
-	# 	beybug
-	# 	@corporation.destroy(params["id"])
-	# 	redirect_to api_v1_corporations_path
-	# end
 
 	private
 
