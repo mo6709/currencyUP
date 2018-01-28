@@ -1,4 +1,9 @@
 class Currency < ApplicationRecord
+    serialize :yearlly_rates, Array
+    serialize :monthly_rates, Array
+    serialize :dailly_rates, Array
+
+
 	has_many :currency_corporations
 	has_many :corporations, through: :currency_corporations
 	has_many :transactions
@@ -10,25 +15,62 @@ class Currency < ApplicationRecord
 		if(self.find(1).updated_at < Time.now - (60 * 60 * 12))
 			fiat_currencies = self.all.find_all{ |c| !c.crypto }
 			fiat_currencies.each do |currency|
-				rate =  Money.default_bank.get_rate(currency.iso_code, 'USD')
-				currency.rate = rate.to_f if rate 
-				currency.save
+				self.rates_data(currency)
 			end
 		end
         
         if(self.find(4).updated_at < Time.now - 10)
         	crypto_currencies = self.all.find_all{ |currency| currency.crypto }
-	        response = Faraday.get 'https://api.coinmarketcap.com/v1/ticker/?convert=USD&limit=50'
-	        repos_array = JSON.parse(response.body)
-	        
 	        crypto_currencies.each do |currency|
-				picket_currency = repos_array.find{ |item| item["symbol"] === currency.iso_code }
-				currency.rate = picket_currency["price_usd"].to_f
-				currency.save
+				self.rates_data(currency)
 			end
-		end 
+		end    
 	end
 
+	def self.rates_data(currency_object)
+		past_12_months_in_seconds =[]
+        yearlly_rates_array = []
+        past_30_days_in_seconds = []
+        monthly_rates_array =[]
+        # past_24_hours_in_seconds = []
+        # dailly_rates_array = []
+        
+        30.times.map do |i|
+        	time = i + 1
+        	past_30_days_in_seconds.push((Date.today - time.days).strftime("%s").to_i)
+        	if time <= 12
+        	    past_12_months_in_seconds.push((Date.today - time.months).strftime("%s").to_i) 
+            end 
+            # if time <= 24
+            #     past_24_hours_in_seconds.push((Time.now - time.hours).strftime("%s").to_i)
+            # end
+        end
+
+		base = "https://min-api.cryptocompare.com/data/histoday?fsym=USD"
+		tsym = "&tsym=#{currency_object.iso_code}"
+		uri = base + tsym + "&limit=370&aggregate=1"
+		
+		request = Faraday.get(uri)
+		response = JSON.parse(request.body)
+        response_data = response["Data"]
+
+	    past_12_months_in_seconds.each do |secs_int|
+            rate_object = response_data.find{ |object| object["time"] === secs_int }
+	        yearlly_rates_array.push(rate_object["close"]) if rate_object
+	    end
+
+        
+	    past_30_days_in_seconds.each do |secs_int|
+            rate_object = response_data.find{ |object| object["time"] === secs_int }
+	        monthly_rates_array.push(rate_object["close"]) if rate_object
+	    end
+
+	    currency_object.rate= response_data.last["close"]
+        currency_object.yearlly_rates= yearlly_rates_array
+        currency_object.monthly_rates= monthly_rates_array
+	    currency_object.save 
+	end
+	
 	def self.updated_all
 		begin 
 	        self.update_rates

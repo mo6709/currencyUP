@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180118225136) do
+ActiveRecord::Schema.define(version: 20180125205904) do
 
   create_table "corporation_investments", force: :cascade do |t|
     t.integer "currency_id"
@@ -57,6 +57,9 @@ ActiveRecord::Schema.define(version: 20180118225136) do
     t.string "subunit"
     t.boolean "symbol_first"
     t.boolean "crypto"
+    t.string "yearlly_rates"
+    t.string "monthly_rates"
+    t.string "dailly_rates"
   end
 
   create_table "currency_corporations", force: :cascade do |t|
