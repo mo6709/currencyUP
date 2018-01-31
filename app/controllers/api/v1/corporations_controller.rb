@@ -26,7 +26,7 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 		if corporation.save
 			render json: { token: Auth.create_token(corporation), account_id: corporation.id } 
 		else
-			render json: { status: "error", code:400, messages: corporation.errors.full_messages }, status: 400
+			render json: { status: "error", code:400, messages: corporation.errors.messages }, status: 400
 		end
 	end
 

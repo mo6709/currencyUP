@@ -24,7 +24,7 @@ class Api::V1::InvestorsController < Api::V1::BaseController
 		if investor.save
 			render json: { token: Auth.create_token(investor), account_id: investor.id }
 		else
-			render json: { status: "error", code: 400, messages: investor.full_mesages }, status: 400
+			render json: { status: "error", code: 400, messages: investor.errors.messages }, status: 400
 		end
 	end
 

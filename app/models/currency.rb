@@ -35,8 +35,7 @@ class Currency < ApplicationRecord
         # past_24_hours_in_seconds = []
         # dailly_rates_array = []
         
-        30.times.map do |i|
-        	time = i + 1
+        31.times.map do |time|
         	past_30_days_in_seconds.push((Date.today - time.days).strftime("%s").to_i)
         	if time <= 12
         	    past_12_months_in_seconds.push((Date.today - time.months).strftime("%s").to_i) 
