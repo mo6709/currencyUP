@@ -58,8 +58,6 @@ GEM
     ffi (1.9.18)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
-    google_currency (3.4.0)
-      money (~> 6.7)
     i18n (0.9.1)
       concurrent-ruby (~> 1.0)
     jsonapi-renderer (0.2.0)
@@ -156,7 +154,6 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   byebug
   faraday
-  google_currency (~> 3.4)
   jwt (~> 1.5.3)
   listen (>= 3.0.5, < 3.2)
   money-rails (~> 1)
