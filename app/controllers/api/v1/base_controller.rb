@@ -1,4 +1,4 @@
-require 'Auth'
+require 'auth'
 
 class Api::V1::BaseController < ActionController::API
 
