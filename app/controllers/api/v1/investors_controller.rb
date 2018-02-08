@@ -48,7 +48,7 @@ class Api::V1::InvestorsController < Api::V1::BaseController
 	private
 
 	def investor_params
-		params.require(:investor).permit(:email, :password, :first_name, :last_name)
+		params.require(:investor).permit(:email, :password, :first_name, :last_name, :region)
 	end
 
 	def investor_update_params
