@@ -12,10 +12,12 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 		token = request.env["HTTP_AUTHORIZATION"]
 		decoded_token = Auth.decode_token(token)
         @corporation = Corporation.find_by(:id => params["id"])
-		if token && decoded_token
-		    render json: @corporation
-		elsif @corporation	
-			render json: { id: @corporation.id, name: @corporation.name }
+		if @corporation
+			if token && decoded_token
+			    render json: @corporation
+			else	
+				render json: { id: @corporation.id, name: @corporation.name }
+			end
 		else
 			render json: { status: "error", code: 400, messages: { error: ["Could not find Corporation"] } }, status: 400
 		end
