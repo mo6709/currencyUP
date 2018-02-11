@@ -12,19 +12,19 @@ class Currency < ApplicationRecord
 	has_many :corporation_investments
 
 	def self.update_rates
-		if(self.find(1).updated_at < Time.now - (60 * 60 * 12))
+		if(self.find_by(:iso_code => "USD").updated_at < Time.now - (60 * 60 * 12))
 			fiat_currencies = self.all.find_all{ |c| !c.crypto }
 			fiat_currencies.each do |currency|
 				self.rates_data(currency)
 			end
 		end
         
-        if(self.find(4).updated_at < Time.now - 10)
+        if(self.find_by(:iso_code => "BTC").updated_at < Time.now - 10)
         	crypto_currencies = self.all.find_all{ |currency| currency.crypto }
 	        crypto_currencies.each do |currency|
 				self.rates_data(currency)
 			end
-		end    
+		end   
 	end
 
 	def self.rates_data(currency_object)
@@ -52,7 +52,7 @@ class Currency < ApplicationRecord
 		request = Faraday.get(uri)
 		response = JSON.parse(request.body)
         response_data = response["Data"]
-
+        
 	    past_12_months_in_seconds.each do |secs_int|
             rate_object = response_data.find{ |object| object["time"] === secs_int }
 	        yearlly_rates_array.push(rate_object["close"]) if rate_object
@@ -64,7 +64,7 @@ class Currency < ApplicationRecord
 	        monthly_rates_array.push(rate_object["close"]) if rate_object
 	    end
 
-	    currency_object.rate= response_data.last["close"]
+	    currency_object.rate= response_data.length > 0 ? response_data.last["close"] : currency_object.rate
         currency_object.yearlly_rates= yearlly_rates_array
         currency_object.monthly_rates= monthly_rates_array
 	    currency_object.save 
@@ -75,7 +75,7 @@ class Currency < ApplicationRecord
 	        self.update_rates
 	        return self.all
 	    rescue
-	    	return puts "No internet connection"
+	    	return puts "Oops! something went wrong."
 	    end
 	end
 end
