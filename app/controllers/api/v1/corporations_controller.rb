@@ -52,7 +52,7 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 	private
 
 	def corporation_params
-		params.require(:corporation).permit(:email, :name, :title, :password)
+		params.require(:corporation).permit(:email, :name, :title, :password, :investment_period)
 	end
 
 	def corporation_update_params
