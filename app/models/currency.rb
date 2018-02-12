@@ -57,7 +57,6 @@ class Currency < ApplicationRecord
             rate_object = response_data.find{ |object| object["time"] === secs_int }
 	        yearlly_rates_array.push(rate_object["close"]) if rate_object
 	    end
-
         
 	    past_30_days_in_seconds.each do |secs_int|
             rate_object = response_data.find{ |object| object["time"] === secs_int }
@@ -75,7 +74,8 @@ class Currency < ApplicationRecord
 	        self.update_rates
 	        return self.all
 	    rescue
-	    	return puts "Oops! something went wrong."
+	    	puts "Oops! something went wrong."
+	    	return self.all
 	    end
 	end
 end
