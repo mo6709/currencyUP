@@ -35,6 +35,24 @@ class Api::V1::CorporationInvestmentsController <  Api::V1::BaseController
 		end
 	end
 
+	def destroy
+		token = request.env["HTTP_AUTHORIZATION"]
+		decoded_token = Auth.decode_token(token)
+		if token && decoded_token 
+			corp_id = decoded_token[0]["account"]["id"]
+			corporation = Corporation.find_by(:id => corp_id)
+			corporation.corporation_investments.delete(params["id"])
+			if corporation.save
+				@corporation_investments = corporation.corporation_investments
+				render json: { data: @corporation_investments }
+			else
+				render json: { status: 'error', code: 400, messages: corporation.errors.messages }, status: 400
+			end
+		else
+			render json: { status: 'error', code: 400, messages: { error: ["Could not authenticate Corporation"] } }, status: 400
+		end
+	end
+
 	private
 
 	def corporation_investment_params
