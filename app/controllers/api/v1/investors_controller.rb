@@ -22,6 +22,9 @@ class Api::V1::InvestorsController < Api::V1::BaseController
 	def signup
 		investor = Investor.new(investor_params)
 		if investor.save
+			currency_params = params["investor"]["currency"]
+			investor.add_currency_investor(currency_params)
+
 			render json: { token: Auth.create_token(investor), account_id: investor.id }
 		else
 			render json: { status: "error", code: 400, messages: investor.errors.messages }, status: 400

@@ -18,10 +18,10 @@ class Transaction < ApplicationRecord
 		corporation = Corporation.find(transaction_data["corporation_id"])
 		if transaction_data["t_type"] === "to_corp"
 			account = investor
-	        funds = account.currency_investors.find(transaction_data["currency_id"]).total_amount
+	        funds = account.currency_investors.find_by(:currency_id => transaction_data["currency_id"]).total_amount
 	    elsif transaction_data["t_type"] === "from_corp"
 	    	account = corporation
-            funds = account.currency_corporations.find(transaction_data["currency_id"]).total_amount
+            funds = account.currency_corporations.find_by(:currency_id => transaction_data["currency_id"]).total_amount
 	    end
 	    
 	    if funds >= transaction_data["total_amount"].to_f

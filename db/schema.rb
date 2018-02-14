@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180125205904) do
+ActiveRecord::Schema.define(version: 20180214000210) do
 
   create_table "corporation_investments", force: :cascade do |t|
     t.integer "currency_id"
@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(version: 20180125205904) do
   create_table "currency_corporations", force: :cascade do |t|
     t.integer "currency_id"
     t.integer "corporation_id"
-    t.float "total_amount"
+    t.float "total_amount", default: 0.0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(version: 20180125205904) do
   create_table "currency_investors", force: :cascade do |t|
     t.integer "currency_id"
     t.integer "investor_id"
-    t.float "total_amount"
+    t.float "total_amount", default: 0.0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -26,6 +26,8 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 	def signup
 		corporation = Corporation.new(corporation_params)
 		if corporation.save
+			currency_params = params["corporation"]["currency"]
+			corporation.add_currency_corporation(currency_params)
 			render json: { token: Auth.create_token(corporation), account_id: corporation.id } 
 		else
 			render json: { status: "error", code:400, messages: corporation.errors.messages }, status: 400
@@ -52,7 +54,7 @@ class Api::V1::CorporationsController < Api::V1::BaseController
 	private
 
 	def corporation_params
-		params.require(:corporation).permit(:email, :name, :title, :password, :investment_period)
+		params.require(:corporation).permit(:email, :name, :title, :password, :investment_period, :currency_corporation)
 	end
 
 	def corporation_update_params

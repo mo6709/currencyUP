@@ -11,5 +11,10 @@ class Corporation < ApplicationRecord
 	has_many :transactions
 	has_many :investors, through: :transactions
 	has_many :corporation_investments
-
+    
+    def add_currency_corporation(currency_params)
+        currency_corporation = self.currency_corporations.find_or_create_by(:currency_id => currencyParams["id"])
+        currency_corporation.total_amount += currency_params["amount"].to_f
+        currency_corporation.save
+    end
 end
