@@ -54,7 +54,10 @@ class Currency < ApplicationRecord
         response_data = response["Data"]
         
 	    past_12_months_in_seconds.each do |secs_int|
-            rate_object = response_data.find{ |object| object["time"] === secs_int }
+	    	rate_object = Sort.find_in_array(response_data, secs_int) 
+	    	# binding.pry
+      #       rate_object = response_data.find{ |object| object["time"] === secs_int }
+
 	        yearlly_rates_array.push(rate_object["close"]) if rate_object
 	    end
         
